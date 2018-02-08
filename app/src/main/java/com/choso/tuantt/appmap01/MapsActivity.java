@@ -71,40 +71,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         mMap.setMyLocationEnabled(true);
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener(){
 
-            @Override
-            public void onMapLongClick(LatLng latLng) {
-                if(listPoints.size() >= 2){
-                    listPoints.clear();
-                    mMap.clear();
-                }
+        LatLng latLng1 = new LatLng(20.9689325, 105.7803107);
+        LatLng latLng2 = new LatLng(20.9706694, 105.7864855);
+        listPoints.add(latLng1);
+        listPoints.add(latLng2);
+        MarkerOptions markerOptions1 = new MarkerOptions();
+        markerOptions1.position(latLng1);
+        markerOptions1.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        mMap.addMarker(markerOptions1);
 
-                listPoints.add(latLng);
+        MarkerOptions markerOptions2 = new MarkerOptions();
+        markerOptions2.position(latLng2);
+        markerOptions2.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        mMap.addMarker(markerOptions2);
 
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(latLng);
+        String url = getRequestURL(listPoints.get(0), listPoints.get(1));
+        TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
+        taskRequestDirections.execute(url);
 
-                if (listPoints.size() == 1){
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
-                }else{
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                }
-
-                mMap.addMarker(markerOptions);
-
-                if(listPoints.size() == 2){
-                    String url = getRequestURL(listPoints.get(0), listPoints.get(1));
-                    TaskRequestDirections taskRequestDirections = new TaskRequestDirections();
-                    taskRequestDirections.execute(url);
-                }
-            }
-        });
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        // camera move to point 1
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLng1.latitude, latLng1.longitude), 12.0f));
     }
 
     private String getRequestURL(LatLng origin, LatLng dest) {
