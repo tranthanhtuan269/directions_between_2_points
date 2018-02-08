@@ -91,7 +91,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         taskRequestDirections.execute(url);
 
         // camera move to point 1
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLng1.latitude, latLng1.longitude), 12.0f));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLng1.latitude, latLng1.longitude), 15.0f));
     }
 
     private String getRequestURL(LatLng origin, LatLng dest) {
